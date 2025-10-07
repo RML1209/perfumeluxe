@@ -311,6 +311,65 @@
     .back-btn:hover {
       background: darkred;
     }
+    
+    
+    /* Video styling */
+.product-video {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  background-color: #f7f7f7;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-video:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* ===== CUSTOM AUDIO PLAYER STYLE ===== */
+audio {
+  width: 100%;
+  height: 40px;
+  border-radius: 30px;
+  outline: none;
+  background: linear-gradient(90deg, #ee9ca7, #ffdde1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 8px;
+}
+
+audio:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Safari/Chrome custom controls */
+audio::-webkit-media-controls-panel {
+  background: linear-gradient(90deg, #ffdde1, #ee9ca7);
+  border-radius: 30px;
+}
+
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button {
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  color: #333;
+  font-weight: bold;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+audio::-webkit-media-controls-timeline {
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
 
   </style>
 </head>
@@ -375,6 +434,7 @@
         <input type="hidden" name="product_name" class="product_name" value="Floral Dream Perfume">
         <button class="btn order-btn" onclick="createOrder('Floral Dream Perfume')">Create Order</button>
         <button class="btn whatsapp-btn" onclick="chatWhatsApp('Floral Dream Perfume')">Chat on WhatsApp</button>
+        
       </div>
 
       <!-- Product 3 -->
@@ -495,5 +555,74 @@ closeAboutOverlay.addEventListener("click", function() {
       window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
     }
   </script>
+<script>
+  // ====== SMART MEDIA CONTROL ======
+  const audios = document.querySelectorAll("audio");
+  const videos = document.querySelectorAll("video");
+  let currentAudio = null;
+
+  // 🎵 AUDIO: itaplay tu ikiwa iko 50% kwenye screen
+  const audioObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const audio = entry.target;
+
+      if (entry.isIntersecting) {
+        // pause zingine zote kwanza
+        audios.forEach(a => {
+          if (a !== audio) a.pause();
+        });
+        // play hii moja
+        audio.play().catch(() => {});
+        currentAudio = audio;
+      } else {
+        // ikiwa imetoka kwenye view
+        if (currentAudio === audio) {
+          audio.pause();
+          currentAudio = null;
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  audios.forEach(audio => {
+    audio.pause();
+    audioObserver.observe(audio);
+  });
+
+  // 🎥 VIDEO CONTROL
+  videos.forEach(video => {
+    video.muted = true; // default ni kimya
+    video.controls = true; // user aweze kudhibiti
+
+    // ikichezwa, zima muziki mwingine
+    video.addEventListener("play", () => {
+      audios.forEach(a => a.pause());
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+
+      // video nyingine zisimame
+      videos.forEach(v => {
+        if (v !== video) v.pause();
+      });
+
+      // toa mute kwenye video iliyobofiwa
+      video.muted = false;
+    });
+  });
+
+  // 🔇 Ikiwa video imetoka kwenye screen, imute
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (!entry.isIntersecting) {
+        video.muted = true; // ikitoka kwenye view
+      }
+    });
+  }, { threshold: 0.5 });
+
+  videos.forEach(video => videoObserver.observe(video));
+</script>
 </body>
 </html>
