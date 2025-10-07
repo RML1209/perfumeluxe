@@ -177,7 +177,73 @@
     .order-btn:hover { background: #e55d50; }
     .whatsapp-btn { background: #25d366; color: #fff; }
     .whatsapp-btn:hover { background: #1da851; }
+    
+    /* ===== HOME OVERLAY STYLE ===== */
+.home-overlay {
+  left: -100%;
+  bottom: 0;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  transition: left 0.6s ease-in-out;
+  border-top-right-radius: 45px;
+  justify-content: center;
+  align-items: center;
+}
+.home-overlay.active {
+  left: 0;
+}
 
+/* ===== ABOUT OVERLAY STYLE ===== */
+.about-overlay {
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  transition: opacity 0.6s ease-in-out, visibility 0.6s;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 25px;
+}
+
+.about-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.about-content {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 40px;
+  border-radius: 20px;
+  animation: fadeSlideUp 0.8s ease-in-out;
+  max-width: 500px;
+  color: white;
+}
+
+.about-title {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #fff;
+  letter-spacing: 1px;
+  animation: fadeSlideUp 1.2s ease forwards;
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #f1f1f1;
+  min-height: 100px;
+  text-align: center;
+  margin-bottom: 25px;
+  white-space: pre-line; /* allows new lines in typewriter text */
+}
+
+/* Fade + slide animation */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
     /* FOOTER */
     footer {
       background: #333;
@@ -259,14 +325,13 @@
       </div>
       <span class="logo-subtitle">ʟᴜxɛ</span>
     </div>
-    <nav>
-      <ul>
-        <div class="navigation"><li><a href="#">Home</a></li></div>
-        <div class="navigation"><li><a href="#" id="shopBtn">Shop</a></li></div>
-        
-        <div class="navigation"><li><a href="#" id="shopBtn">About</a></li></div>
-      </ul>
-    </nav>
+  <nav>
+  <ul>
+    <div class="navigation"><li><a href="#" id="homeBtn">Home</a></li></div>
+    <div class="navigation"><li><a href="#" id="shopBtn">Shop</a></li></div>
+    <div class="navigation"><li><a href="#" id="aboutBtn">About</a></li></div>
+  </ul>
+</nav>
   </header>
 
   <!-- SHOP CONTENT -->
@@ -328,11 +393,27 @@
 
     </div>
   </main>
-    <!-- OVERLAY -->
+    <!-- SHOP OVERLAY -->
   <div class="overlay" id="overlay">
     <p>Welcome to shopping with Perfume Luxe</p>
     <button class="back-btn" id="closeOverlay">Back</button>
   </div>
+  
+ <!-- ===== HOME OVERLAY ===== -->
+<div class="overlay home-overlay" id="homeOverlay">
+  <p>Welcome to <strong>Perfume Luxe</strong> — Discover luxury fragrances crafted with passion and elegance.</p>
+  <button class="back-btn" id="closeHomeOverlay">Back</button>
+</div>
+
+<!-- ===== ABOUT OVERLAY ===== -->
+<!-- ===== ABOUT OVERLAY ===== -->
+<div class="overlay about-overlay" id="aboutOverlay">
+  <div class="about-content">
+    <h2 class="about-title">About Perfume Luxe</h2>
+    <p class="about-text" id="typeText"></p>
+    <button class="back-btn" id="closeAboutOverlay">Close</button>
+  </div>
+</div>
 
   <!-- FOOTER -->
   <footer>
@@ -357,6 +438,50 @@
     document.getElementById("closeOverlay").addEventListener("click", function() {
       document.getElementById("overlay").classList.remove("active");
     });
+    
+    // ===== HOME OVERLAY =====
+document.getElementById("homeBtn").addEventListener("click", function(e) {
+  e.preventDefault();
+  document.getElementById("homeOverlay").classList.add("active");
+});
+
+document.getElementById("closeHomeOverlay").addEventListener("click", function() {
+  document.getElementById("homeOverlay").classList.remove("active");
+});
+// ===== ABOUT OVERLAY =====
+const aboutBtn = document.getElementById("aboutBtn");
+const aboutOverlay = document.getElementById("aboutOverlay");
+const closeAboutOverlay = document.getElementById("closeAboutOverlay");
+const typeText = document.getElementById("typeText");
+
+// Typewriter text message
+const aboutMessage = 
+  "Perfume Luxe is your destination for premium, long-lasting fragrances.\n\nEach scent tells a story — of elegance, charm, and unforgettable luxury.";
+
+// Function for typewriter effect
+function typeWriter(text, element, speed = 45) {
+  element.textContent = ""; // clear previous text
+  let i = 0;
+  const timer = setInterval(() => {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+    } else {
+      clearInterval(timer);
+    }
+  }, speed);
+}
+
+aboutBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+  aboutOverlay.classList.add("active");
+  typeWriter(aboutMessage, typeText); // start typing animation
+});
+
+closeAboutOverlay.addEventListener("click", function() {
+  aboutOverlay.classList.remove("active");
+  typeText.textContent = ""; // reset text when closing
+});
 
     
     function createOrder(product) {
