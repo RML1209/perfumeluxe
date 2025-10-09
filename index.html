@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perfume Luxe Shop</title>
   <style>
@@ -11,6 +12,106 @@
       box-sizing: border-box;
       font-family: "Segoe UI", sans-serif;
     }
+ /* Base container styling for the background and layout */
+body {
+    background: linear-gradient(to bottom right, #ffe6f0, #ffcce6); /* Background gradient from your image */
+    min-height: 100vh; /* Ensure the background fills the viewport */
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; /* Example font */
+}
+
+/* Flexbox to align header content (logo, searchbar, nav) */
+header {
+    display: flex;
+    justify-content: space-between; /* Spreads out the main elements */
+    align-items: center; /* Vertically centers elements */
+    padding: 10px 20px;
+}
+
+
+/* Base container styling for the background and layout */
+body {
+    background: linear-gradient(to bottom right, #ffe6f0, #ffcce6); /* Background gradient from your image */
+    min-height: 100vh; /* Ensure the background fills the viewport */
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; /* Example font */
+}
+
+/* Flexbox to align header content (logo, searchbar, nav) */
+header {
+    display: flex;
+    justify-content: space-between; /* Spreads out the main elements */
+    align-items: center; /* Vertically centers elements */
+    padding: 10px 20px;
+}
+
+/* --- Search Bar Styling --- */
+
+.search-container {
+    margin-left:0px;
+    padding-right:12px; 
+    margin-bottom:50px;
+    display: flex;
+    align-items: center;
+    
+    border: none;
+    border-radius:20px;  
+    /* Sets the overall width and keeps it rounded */
+    background-color: white; /* The main white container */
+    padding: 0px; /* Creates internal space */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 40px; /* Adjust width as needed for your design */
+    max-width: 90%;
+}
+
+.search-input {
+    flex-grow: 1; /* Allows the input to take up most of the space */
+    border: none;
+    border-radius:20px;
+    padding: 10px;
+    font-size: 15px;
+    color: #555;
+    background: white; /* Makes the input area transparent inside the white container */
+    /* Remove default focus outline */
+    outline: none; 
+}
+
+.search-input::placeholder {
+  
+    /* To match the font style of the placeholder in the image */
+    font-weight: 500; 
+     color:black;
+     font-size:15px;
+}
+
+.search-button {
+    /* Main button styling to create the rounded pink look */
+    border: none;
+    border-radius: 20px; /* Fully rounded button */
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    /* Gradient for the pink look */
+    background: linear-gradient(to right, #ff99cc, #ff66b2); 
+    box-shadow: 0 2px 4px rgba(255, 102, 178, 0.5); /* Matching shadow */
+    transition: background 0.3s ease;
+    
+   
+}
+
+.search-button:hover {
+    /* Slightly darker gradient on hover */
+    background: linear-gradient(to right, #ffb3d9, #ff70bb);
+}
+
+
+
+
+
 
     body {
       background: #fdfdfd;
@@ -99,7 +200,10 @@
       background: white;
       border-radius: 10px;
       padding: 10px;
+      
+      
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-top:35px;
     }
     .navigation:hover {
       background-color: indigo;
@@ -371,6 +475,110 @@ audio::-webkit-media-controls-timeline {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
+/* ===== CREATE ORDER OVERLAY (with blur effect) ===== */
+.order-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); /* 🔹 adds the soft blur */
+  background: rgba(255, 255, 255, 0.4); /* semi-transparent white */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  z-index: 3000;
+}
+
+.order-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.order-box {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  padding: 35px;
+  width: 90%;
+  max-width: 420px;
+  text-align: left;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.order-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 700;
+}
+
+.order-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-box label {
+  font-weight: 600;
+  color: #444;
+}
+
+.order-box input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.order-box input:focus {
+  border-color: #ff6f61;
+}
+
+#addOrderBtn {
+  background: linear-gradient(90deg, #ee9ca7, #ffdde1);
+  color: #222;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+#addOrderBtn:hover {
+  transform: scale(1.03);
+}
+
+.closeOrderBtn {
+  background: #444;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 15px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.closeOrderBtn:hover {
+  background: #222;
+  transform: scale(1.02);
+}
+
   </style>
 </head>
 <body>
@@ -384,6 +592,11 @@ audio::-webkit-media-controls-timeline {
       </div>
       <span class="logo-subtitle">ʟᴜxɛ</span>
     </div>
+   <div class="search-container">
+        <input type="text" class="search-input" placeholder="Search perfume...">
+        <button type="submit" class="search-button"><i class="fa-solid fa-search"></i></button>
+    </div>  
+    
   <nav>
   <ul>
     <div class="navigation"><li><a href="#" id="homeBtn">Home</a></li></div>
@@ -472,6 +685,26 @@ audio::-webkit-media-controls-timeline {
     <h2 class="about-title">About Perfume Luxe</h2>
     <p class="about-text" id="typeText"></p>
     <button class="back-btn" id="closeAboutOverlay">Close</button>
+  </div>
+</div>
+
+<!-- ===== CREATE ORDER OVERLAY ===== -->
+<div class="order-overlay" id="orderOverlay">
+  <div class="order-box">
+    <h2>Create Order</h2>
+    <form id="orderForm">
+      <label>WhatsApp Number:</label>
+      <input type="tel" id="whatsappNumber" placeholder=" 2557000000000" required>
+
+      <label>Place (Delivery Location):</label>
+      <input type="text" id="place" placeholder="Enter your delivery place" required>
+
+      <label>Product:</label>
+      <input type="text" id="productName" readonly>
+
+      <button type="submit" id="addOrderBtn">Add Order</button>
+    </form>
+    <button class="closeOrderBtn" id="closeOrderOverlay">Cancel</button>
   </div>
 </div>
 
@@ -623,6 +856,42 @@ closeAboutOverlay.addEventListener("click", function() {
   }, { threshold: 0.5 });
 
   videos.forEach(video => videoObserver.observe(video));
+  
+  // ===== CREATE ORDER OVERLAY =====
+const orderOverlay = document.getElementById("orderOverlay");
+const closeOrderOverlay = document.getElementById("closeOrderOverlay");
+const orderForm = document.getElementById("orderForm");
+const productNameInput = document.getElementById("productName");
+
+function createOrder(product) {
+  productNameInput.value = product;
+  orderOverlay.classList.add("active");
+}
+
+closeOrderOverlay.addEventListener("click", () => {
+  orderOverlay.classList.remove("active");
+});
+
+orderForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const number = document.getElementById("whatsappNumber").value.trim();
+  const place = document.getElementById("place").value.trim();
+  const product = productNameInput.value.trim();
+
+  if (!number || !place || !product) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const message = encodeURIComponent(
+    `Hello! I would like to order:\n🧴 Product: ${product}\n📍 Place: ${place}\n📞 My WhatsApp: ${number}`
+  );
+
+  window.open(`https://wa.me/${number}?text=${message}`, "_blank");
+  orderOverlay.classList.remove("active");
+  orderForm.reset();
+});
 </script>
 </body>
 </html>
