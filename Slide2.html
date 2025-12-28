@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual Touch Image Slider</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: sans-serif; }
+
+    .slider {
+      width: 90%;
+      max-width:600px; 
+      height: auto;
+      margin: 0 auto;
+      overflow:hidden;
+      border-radius: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .slides img {
+      width: 90%;
+      height: auto;
+      margin:0 auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+  
+  </style>
+</head>
+<body>
+
+  <div class="slider" id="slider">
+    <div class="slides" id="slides">
+      <img src="1761585419_1760625054_perfume1.jpg" alt="Picha 1">
+      <img src="1761585515_1760640890_1760625282_perfume3.jpg" alt="Picha 2">
+      <img src="perfume3.jpg" alt="Picha 3">
+    </div>
+  </div>
+
+  <script>
+    const slides = document.getElementById('slides');
+    const slider = document.getElementById('slider');
+    const totalSlides = slides.children.length;
+    let index = 0;
+
+    let startX = 0;
+    let currentX = 0;
+
+    slider.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener('touchmove', (e) => {
+      currentX = e.touches[0].clientX;
+    });
+
+    slider.addEventListener('touchend', () => {
+      const diff = currentX - startX;
+      if (diff > 50) {
+        // Swipe right
+        index = Math.max(index - 1, 0);
+      } else if (diff < -50) {
+        // Swipe left
+        index = Math.min(index + 1, totalSlides - 1);
+      }
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    });
+  </script>
+
+</body>
+</html>

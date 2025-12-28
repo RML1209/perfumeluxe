@@ -1,0 +1,85 @@
+<?php
+session_start();
+require 'db_connect.php';
+
+$admin_id = $_SESSION['user_id'];
+
+// Fetch unique profile ya admin aliyelogin
+$stmt = $conn->prepare("SELECT username, profile_picture FROM admin_profile WHERE admin_id = ?");
+$stmt->bind_param("i", $admin_id);
+$stmt->execute();
+$profile = $stmt->get_result()->fetch_assoc();
+
+// Kama hakuna profile bado → tumia default
+if (!$profile) {
+    $profile = [
+        "username" => "New Admin",
+        "profile_picture" => "default_profile.png"
+    ];
+}
+?>
+
+
+
+
+
+
+
+
+<main>
+    <h1 style="font-size: 2.5rem;">𝓟𝓔𝓡𝓕𝓤𝓜𝓔 𝓒𝓞𝓛𝓛𝓔𝓒𝓣𝓘𝓞𝓝</h1>
+  <div class="shop">
+   
+  <?php while($row = $result->fetch_assoc()): ?>
+    
+    <div class="product-card">
+      
+    <div class="header_profile_image">
+    <img src="uploads/<?php echo htmlspecialchars($profile['profile_picture'] ?? 'default_profile.png'); ?>" 
+         alt="profile picture" class="profile-pic">
+
+    <span class="profile_username">
+        <?php echo htmlspecialchars($profile['username']); ?>
+    </span>
+</div>
+
+      <img src="<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>" class="product-image">
+      
+      <?php if (!empty($row['video'])): ?>
+      <div class="media">
+        <video class="product-video" controls>
+          <source src="<?php echo $row['video']; ?>" type="video/mp4">
+        </video>
+      </div>
+      <?php elseif (!empty($row['audio'])): ?>
+      <div class="media">
+        <audio controls>
+          <source src="<?php echo $row['audio']; ?>" type="audio/mpeg">
+        </audio>
+      </div>
+      <?php endif; ?>
+
+      <p class="product-description">
+        <strong style="color:darkgreen;"><?php echo $row['name']; ?></strong><br>
+        <?php echo htmlspecialchars($row['description']); ?><br>
+        <b  style="color:#e91e63;">Brand:</b> <?php echo $row['brand']; ?><br>
+        <b style="color:#e91e63;">Type:</b> <?php echo $row['scent_type']; ?><br>
+        <b style="color:#e91e63;">Gender:</b> <?php echo $row['gender']; ?><br>
+        <b style="color:#e91e63;">Price:</b> Tsh <?php echo $row['price']; ?>/=<br>
+      </p>
+ <div class="button-backgorund-color" >
+       <button class="btn order-btn" style="font-size:12px;"  onclick="createOrder('<?php echo $row['id']; ?>','<?php echo $row['name']; ?>')"><i class="fas fa-cart-shopping" style="font-size:16px;"></i> Order</button>
+      <button class="btn whatsapp-btn"  style="font-size:12px;" onclick="chatWhatsApp('<?php echo $row['name']; ?>')"><i class="fab fa-whatsapp" style="font-size:16px;"></i>  Chat</button>
+     <!-- <button class="about_product" onclick="openModel()" style="font-size:12px;"><i class="fas fa-circle-info" style="font-size:16px;"></i> About</button> -->
+
+<button class="about_product"  onclick="window.open('about_perfume.php', '_blank')" style="font-size:12px;"><i class="fas fa-circle-info" style="font-size:16px;"></i> About
+  
+</button>
+      <!-- <button class="btn order-btn" onclick="createOrder('<?php echo $row['id']; ?>','<?php echo $row['name']; ?>')">Create Order</button>
+      <button class="btn whatsapp-btn" onclick="chatWhatsApp('<?php echo $row['name']; ?>')">Chat on WhatsApp</button>
+      <button class="about_product" >About product</button> -->
+      </div>
+    </div>
+  <?php endwhile; ?>
+</div>  
+  </main>

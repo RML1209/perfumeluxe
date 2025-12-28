@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Slider</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: sans-serif; }
+
+    .slider {
+      width: 100%;
+      max-width:100%;
+      height:0 auto;
+      margin: 50px auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      animation: slide 20s infinite;
+    }
+
+    .slides img {
+       border-radius: 10px;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    @keyframes slide {
+      0%   { margin-left: 0%;   }
+      33%  { margin-left: -100%; }
+      66%  { margin-left: -100%; }
+      100% { margin-left: 0%;   }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slider">
+    <div class="slides">
+      <img src="1761585419_1760625054_perfume1.jpg" alt="Picha 1">
+      <img src="1761585515_1760640890_1760625282_perfume3.jpg" alt="Picha 2">
+      <img src="1761585419_1760625054_perfume1.jpg" alt="Picha 3">
+    </div>
+  </div>
+
+</body>
+</html>

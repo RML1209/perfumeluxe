@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Perfume Slider UI</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Styles for Elegance and Typography */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            /* Added padding for better visibility of the slider container on the page */
+            padding: 20px; 
+        }
+
+        .slider-container {
+            /* Full width (minus padding from body), responsive height */
+            width: 100%;
+            height: 75vh; /* Increased height slightly for more impact */
+            min-height: 450px; /* Minimum height ensures usability on small devices */
+        }
+
+        .slide {
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* CRITICAL FOR RESPONSIVE BACKGROUND IMAGE */
+            background-size: cover; 
+            background-position: center;
+            color: white; 
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .slide-content {
+            z-index: 20;
+            max-width: 90%;
+            text-align: center;
+            padding: 1rem;
+            /* Ensure content scales correctly on mobile */
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive Headings - Tailwind classes handle this beautifully */
+        .slide h1 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.1em;
+            /* Default size for mobile, scaling up for larger screens */
+            font-size: 2.5rem; /* ~40px on mobile */
+        }
+
+        /* Tailwind classes already handle responsiveness, but we confirm base styles */
+        @media (min-width: 640px) { /* sm: */
+            .slide h1 {
+                font-size: 4rem; /* ~64px on tablet */
+            }
+        }
+        @media (min-width: 1024px) { /* lg: */
+            .slide h1 {
+                font-size: 5rem; /* ~80px on desktop */
+            }
+        }
+
+
+        .cta-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            /* Ensure button is large enough for easy touch tapping on mobile */
+            padding: 0.75rem 2.5rem; 
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Background Overlays and Placeholders */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15; 
+        }
+
+        /* Slide 1: Black & Gold Classic Launch */
+        .slide-1::before {
+            background: rgba(0, 0, 0, 0.55); /* Slightly darker overlay for contrast */
+        }
+        /* Using a placeholder that suggests luxury packaging */
+        .slide-1 {
+            background-image: url('https://placehold.co/1920x800/181818/FFD700?text=Luxury+Black+%26+Gold+Bottle');
+        }
+
+        /* Slide 2: Floral & Ethereal */
+        .slide-2::before {
+            background: rgba(255, 255, 255, 0.4); /* Light overlay */
+        }
+        /* Using a placeholder that suggests light ingredients */
+        .slide-2 {
+            background-image: url('https://placehold.co/1920x800/F5E6CC/6A5ACD?text=White+Flowers+in+Sunlight');
+            color: #4A4A4A;
+        }
+
+        /* Slide 3: Bold Men's Collection */
+        .slide-3::before {
+            background: rgba(10, 20, 30, 0.65);
+        }
+        /* Using a placeholder that suggests wood and smoke */
+        .slide-3 {
+            background-image: url('https://placehold.co/1920x800/36454F/FFFFFF?text=Smoked+Oud+and+Cedar+Wood');
+        }
+
+        /* Slide 4: Limited Edition */
+        .slide-4::before {
+            background: rgba(45, 18, 55, 0.75); 
+        }
+        /* Using a placeholder that suggests a rare, deep color */
+        .slide-4 {
+            background-image: url('https://placehold.co/1920x800/5C2E91/FFFFFF?text=Crystal+Perfume+Vial');
+        }
+
+        /* Slide 5: Seasonal Promotion */
+        .slide-5::before {
+            background: rgba(255, 99, 71, 0.35); 
+        }
+        /* Using a placeholder that suggests a vibrant, summer setting */
+        .slide-5 {
+            background-image: url('https://placehold.co/1920x800/FFA07A/FFFFFF?text=Summer+Citrus+Splash');
+            color: #333;
+        }
+
+        /* Navigation Arrows (Responsive Sizing) */
+        #prevBtn, #nextBtn {
+            opacity: 0.8;
+            font-size: 1.5rem; /* Smaller on mobile */
+        }
+        @media (min-width: 768px) { /* md: */
+            #prevBtn, #nextBtn {
+                font-size: 2rem; /* Larger on desktop */
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="slider-container relative overflow-hidden mx-auto shadow-2xl rounded-xl">
+
+        <!-- Slide 1: Classic Launch - Black & Gold -->
+        <div class="slide slide-1 active">
+            <div class="slide-content">
+                <p class="text-base md:text-xl font-light mb-4 uppercase text-yellow-400">Introducing the Signature Scent</p>
+                <h1 class="text-4xl md:text-7xl font-bold uppercase tracking-wider mb-6">THE NOIR ELIXIR</h1>
+                <p class="text-sm md:text-xl max-w-2xl mx-auto font-extralight mb-8">
+                    An unparalleled blend of dark musk and vetiver. Experience pure, unadulterated luxury.
+                </p>
+                <button class="cta-button bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold uppercase text-sm">
+                    Discover Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 2: Floral & Ethereal - Ingredient Focus -->
+        <div class="slide slide-2">
+            <div class="slide-content">
+                <p class="text-base md:text-xl font-medium mb-4 uppercase text-gray-600">Pure. Simple. Natural.</p>
+                <h1 class="text-4xl md:text-7xl font-bold uppercase tracking-wide mb-6">THE ROSE WATER ESSENCE</h1>
+                <p class="text-sm md:text-xl max-w-2xl mx-auto font-normal mb-8 text-gray-700">
+                    Hand-picked Bulgarian roses and crisp citrus notes create a light, uplifting aroma for daily wear.
+                </p>
+                <button class="cta-button bg-white text-pink-600 px-8 py-3 rounded-full font-semibold uppercase text-sm border-2 border-pink-600">
+                    Shop Floral Collection
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 3: Bold Men's Collection - Angular Design -->
+        <div class="slide slide-3">
+            <div class="slide-content">
+                <p class="text-base md:text-xl font-light mb-4 uppercase text-gray-300">For the Modern Man</p>
+                <h1 class="text-4xl md:text-7xl font-bold uppercase tracking-widest mb-6">URBAN WOOD OUD</h1>
+                <p class="text-sm md:text-xl max-w-2xl mx-auto font-extralight mb-8">
+                    A deep, resonant scent with notes of smoked cedar, ambergris, and black pepper. Unapologetically masculine.
+                </p>
+                <button class="cta-button bg-white text-gray-900 px-8 py-3 rounded-full font-semibold uppercase text-sm">
+                    Explore Grooming
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 4: Limited Edition - Exclusive Feel -->
+        <div class="slide slide-4">
+            <div class="slide-content">
+                <p class="text-base md:text-xl font-extralight mb-4 uppercase text-purple-300">Limited to 500 Bottles</p>
+                <h1 class="text-4xl md:text-7xl font-bold uppercase tracking-wider mb-6 text-white">THE MIDNIGHT RESERVE</h1>
+                <p class="text-sm md:text-xl max-w-2xl mx-auto font-light mb-8">
+                    Infused with rare Indonesian vanilla and sandalwood, bottled in hand-polished crystal. Don't miss this one-time release.
+                </p>
+                <button class="cta-button bg-purple-500 text-white px-8 py-3 rounded-full font-semibold uppercase text-sm hover:bg-purple-600">
+                    Pre-Order Yours
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide 5: Seasonal Promotion - Bright and Clear CTA -->
+        <div class="slide slide-5">
+            <div class="slide-content">
+                <p class="text-base md:text-xl font-light mb-4 uppercase text-red-700">Summer Flash Sale</p>
+                <h1 class="text-4xl md:text-7xl font-bold uppercase tracking-wide mb-6 text-red-800">25% OFF ALL COLLECTIONS</h1>
+                <p class="text-sm md:text-xl max-w-2xl mx-auto font-medium mb-8 text-gray-800">
+                    Refresh your scent for the season with our lowest prices of the year. Offer ends Sunday!
+                </p>
+                <button class="cta-button bg-red-700 text-white px-8 py-3 rounded-full font-bold uppercase text-sm">
+                    Claim Discount Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button id="prevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black bg-opacity-30 hover:bg-opacity-60 text-white text-2xl rounded-full z-30 transition-opacity focus:outline-none focus:ring-4 focus:ring-white">
+            &#10094;
+        </button>
+        <button id="nextBtn" class="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black bg-opacity-30 hover:bg-opacity-60 text-white text-2xl rounded-full z-30 transition-opacity focus:outline-none focus:ring-4 focus:ring-white">
+            &#10095;
+        </button>
+
+        <!-- Navigation Dots -->
+        <div id="dots-container" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-30">
+            <!-- Dots will be generated by JavaScript -->
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsContainer = document.getElementById('dots-container');
+            const totalSlides = slides.length;
+            let currentSlideIndex = 0;
+            let slideInterval;
+
+            // --- Core Functions ---
+
+            function showSlide(index) {
+                // Ensure the index loops around
+                currentSlideIndex = (index + totalSlides) % totalSlides;
+
+                // 1. Hide all slides and deactivate dots
+                slides.forEach(slide => slide.classList.remove('active'));
+                document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+                
+                // 2. Show the active slide
+                slides[currentSlideIndex].classList.add('active');
+
+                // 3. Activate the current dot
+                const currentDot = dotsContainer.children[currentSlideIndex];
+                if (currentDot) {
+                    // Adjust dot color for contrast based on background theme
+                    const isLightSlide = slides[currentSlideIndex].classList.contains('slide-2') || 
+                                         slides[currentSlideIndex].classList.contains('slide-5');
+                    
+                    currentDot.classList.add('active');
+                    // Use a slightly larger size for active dot
+                    currentDot.classList.add('w-3', 'h-3'); 
+                    currentDot.style.backgroundColor = isLightSlide ? '#333' : '#fff'; // Black dots on light slides, white on dark
+                }
+            }
+
+            function nextSlide() {
+                showSlide(currentSlideIndex + 1);
+            }
+
+            function prevSlide() {
+                showSlide(currentSlideIndex - 1);
+            }
+
+            function startAutoSlide() {
+                // Clear any existing interval before starting a new one
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+            }
+
+            // --- Initialization ---
+            
+            // Generate Navigation Dots
+            slides.forEach((_, index) => {
+                const dot = document.createElement('span');
+                // The dots use a smaller size (w-2 h-2) when inactive
+                dot.classList.add('dot', 'w-2', 'h-2', 'rounded-full', 'bg-white', 'bg-opacity-50', 'cursor-pointer', 'transition-all', 'duration-300');
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                    startAutoSlide(); // Restart interval on manual navigation
+                });
+                dotsContainer.appendChild(dot);
+            });
+
+            // Set initial state
+            showSlide(currentSlideIndex);
+            startAutoSlide();
+
+            // --- Event Listeners for Manual Control ---
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                startAutoSlide(); 
+            });
+
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                startAutoSlide(); 
+            });
+            
+            // Pause auto-slide when mouse hovers over the slider (Desktop/Tablet interaction)
+            const sliderContainer = document.querySelector('.slider-container');
+            sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            sliderContainer.addEventListener('mouseleave', startAutoSlide);
+            
+            // Basic Mobile Swipe Support (Touch Events)
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            sliderContainer.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                clearInterval(slideInterval); // Pause interval on touch
+            }, false);
+
+            sliderContainer.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+                startAutoSlide(); // Restart interval after touch ends
+            }, false);
+
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance in pixels to register a swipe
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        // Swiped Left (Go to next slide)
+                        nextSlide();
+                    } else {
+                        // Swiped Right (Go to previous slide)
+                        prevSlide();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
